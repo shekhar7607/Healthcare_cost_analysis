@@ -138,7 +138,9 @@ cor(hospital$TOTCHG,hospital$AGE)
 cor(hospital$TOTCHG,hospital$FEMALE)
 # [1] -0.06019504
 
-# From cor we came to the conclusion that hospitalisation cost mainly depend on 
+boxplot(TOTCHG ~ FEMALE, data = hospital)
+
+# From cor we came to the conclusion that hospitalization cost mainly depend on 
 # LOS(length of stay)
 
 
