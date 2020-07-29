@@ -106,39 +106,82 @@ cor(hospital$TOTCHG,hospital$RACE)
 #      costs by age and gender for the proper allocation of resources.
 
 
-cor(hospital$TOTCHG, hospital$AGE)
-# [1] 0.1316797 , from here we come to conclusion that age is not effecting the total cost.
+analyse_age <- aov(TOTCHG~AGE, data = hospital)
+summary(analyse_age)
+# Df    Sum Sq   Mean Sq F value  Pr(>F)   
+# AGE           1 1.308e+08 130822234   8.787 0.00318 **
+#   Residuals   498 7.414e+09  14887377                   
+# ---
+#   Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-cor(hospital$TOTCHG,hospital$FEMALE)
-# [1] -0.06019504
-# It seems that gender also does not effect the hospitalization
+# 
+# As from above analysis we are coming to conclusion that total charge is not affected by
+# age
 
+analyse_gender <- aov(TOTCHG~FEMALE, data = hospital)
+summary(analyse_gender)
+# Df    Sum Sq  Mean Sq F value Pr(>F)
+# FEMALE        1 2.734e+07 27337922   1.811  0.179
+# Residuals   498 7.517e+09 15095177 
 
+# From above analysis we are coming to conlusion that total charge id affected by gender.
 
+boxplot(TOTCHG ~ FEMALE, data = hospital)
+# We can see through the boxplot the above scenario
 
 
 
 # 5. Since the length of stay is the crucial factor for inpatients, the agency wants to find if the length of
 #    stay can be predicted from age, gender, and race.
-# 
+#
+
+
+
+
+
+
+
+
+
+
+
+
+
 # 6. To perform a complete analysis, the agency wants to find the variable that mainly affects hospital costs.
 
 
-cor(hospital$TOTCHG,hospital$LOS)
-# [1] 0.623193
+charge_LOS <- aov(TOTCHG~LOS, data = hospital)
+summary(charge_LOS)
+
+# OUTPUT ::
+# Df    Sum Sq   Mean Sq F value Pr(>F)    
+# LOS           1 2.930e+09 2.930e+09   316.2 <2e-16 ***
+#   Residuals   498 4.615e+09 9.266e+06                   
+# ---
+#   Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+# Total charge is affected by LOS(length of stay)
 
 
-cor(hospital$TOTCHG,hospital$APRDRG)
-# [1] -0.3300012
+charge_gender <- aov(TOTCHG~FEMALE, data = hospital)
+summary(charge_gender)
+
+# OUTPUT ::
+#   Df    Sum Sq  Mean Sq F value Pr(>F)
+# FEMALE        1 2.734e+07 27337922   1.811  0.179
+# Residuals   498 7.517e+09 15095177
+#Gender does not effect the total cost
 
 
-cor(hospital$TOTCHG,hospital$AGE)
-# [1] 0.1316797
+charge_age <- aov(TOTCHG~AGE, data = hospital)
+summary(charge_age)
 
-cor(hospital$TOTCHG,hospital$FEMALE)
-# [1] -0.06019504
+# OUTPUT ::
+# Df    Sum Sq   Mean Sq F value  Pr(>F)   
+# AGE           1 1.308e+08 130822234   8.787 0.00318 **
+#   Residuals   498 7.414e+09  14887377                   
+# ---
+#   Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-# From cor we came to the conclusion that hospitalisation cost mainly depend on 
-# LOS(length of stay)
-
-
+# Total charge is affected by age, but we can also analyze by the help of plot.
+plot(TOTCHG~AGE, data = hospital)
