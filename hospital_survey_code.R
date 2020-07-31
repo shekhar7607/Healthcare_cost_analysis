@@ -93,7 +93,7 @@ str(hospital$TOTCHG)
 
 malpractice_analysis <- aov(TOTCHG~RACE, data = hospital)
 summary(malpractice_analysis)
-cor(hospital$TOTCHG,hospital$RACE)
+
 
 # 
 # # OUTPUT ::
@@ -124,7 +124,7 @@ summary(analyse_age)
 #   Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 # 
-# As from above analysis we are coming to conclusion that total charge is not affected by
+# As from above analysis we are coming to conclusion that total charge is affected by
 # age
 
 analyse_gender <- aov(TOTCHG~FEMALE, data = hospital)
@@ -133,7 +133,7 @@ summary(analyse_gender)
 # FEMALE        1 2.734e+07 27337922   1.811  0.179
 # Residuals   498 7.517e+09 15095177 
 
-# From above analysis we are coming to conclusion that total charge id affected by gender.
+# From above analysis we are coming to conclusion that total charge is not affected by gender.
 
 boxplot(TOTCHG ~ FEMALE, data = hospital)
 # We can see through the boxplot the above scenario
@@ -147,19 +147,33 @@ boxplot(TOTCHG ~ FEMALE, data = hospital)
 #    stay can be predicted from age, gender, and race.
 #
 
-linear_model <- aov(LOS ~ AGE + FEMALE + RACE, data = hospital)
+linear_model <- lm(LOS ~ AGE + FEMALE + RACE, data = hospital)
 summary(linear_model)
 
-
-
 # OUTPUT ::
+#   
+#   Call:
+#   lm(formula = LOS ~ AGE + FEMALE + RACE, data = hospital)
+# 
+# Residuals:
+#   Min     1Q Median     3Q    Max 
+# -3.22  -1.22  -0.85   0.15  37.78 
+# 
+# Coefficients:
+#   Estimate Std. Error t value Pr(>|t|)    
+# (Intercept)  2.94377    0.39318   7.487 3.25e-13 ***
+#   AGE         -0.03960    0.02231  -1.775   0.0766 .  
+# FEMALE       0.37011    0.31024   1.193   0.2334    
+# RACE        -0.09408    0.29312  -0.321   0.7484    
+# ---
+#   Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+# 
+# Residual standard error: 3.363 on 495 degrees of freedom
+# (1 observation deleted due to missingness)
+# Multiple R-squared:  0.007898,	Adjusted R-squared:  0.001886 
+# F-statistic: 1.314 on 3 and 495 DF,  p-value: 0.2692
 
-# # Df Sum Sq Mean Sq F value Pr(>F)
-# # AGE           1     27  26.907   2.378  0.124
-# # FEMALE        1     17  16.510   1.459  0.228
-# # RACE          1      1   1.165   0.103  0.748
-# # Residuals   495   5600  11.313               
-# # 1 observation deleted due to missingness
+
 
 # From the above we are coming to conclusion that length of stay(LOS) is not affected by 
 # age(AGE), gender and by RACE.
@@ -226,5 +240,11 @@ summary(charge_severity)
 
 
 
-# From above, we come to conclusion that Length of stay(LOS) and severity of 
+# From above, we come to conclusion that hospitalization cost is affected by Length of stay(LOS) and severity of 
 # diagnosis i.e(APRDRG). And little bit is affected by AGE.
+
+
+
+
+
+
