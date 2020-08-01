@@ -104,7 +104,9 @@ summary(malpractice_analysis)
 # 
 # alpha = 0.5
 # p-value = 0.686
-# As p value is greater than alpha, so total cost is not related to race
+
+# RESULT ::
+# # As p value is greater than alpha, so total cost is not related to race.
 
 
 
@@ -117,17 +119,21 @@ summary(malpractice_analysis)
 
 analyse_age <- aov(TOTCHG~AGE, data = hospital)
 summary(analyse_age)
+
+# OUTPUT ::
 # Df    Sum Sq   Mean Sq F value  Pr(>F)   
 # AGE           1 1.308e+08 130822234   8.787 0.00318 **
 #   Residuals   498 7.414e+09  14887377                   
 # ---
 #   Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-# 
+# Result
 # As from above analysis we are coming to conclusion that total charge is affected by
 # age
 
-analyse_gender <- aov(TOTCHG~FEMALE, data = hospital)
+
+#Here we are checking whether the gender is affecting the total cost or not.
+analyse_gender <- aov(TOTCHG~FEMALE, data = hospital) 
 summary(analyse_gender)
 # Df    Sum Sq  Mean Sq F value Pr(>F)
 # FEMALE        1 2.734e+07 27337922   1.811  0.179
@@ -188,63 +194,88 @@ summary(linear_model)
 # 6. To perform a complete analysis, the agency wants to find the variable that mainly affects hospital costs.
 
 
-charge_LOS <- aov(TOTCHG~LOS, data = hospital)
-summary(charge_LOS)
 
+model <- lm(TOTCHG ~ ., data = hospital)
+model
+summary_model <- summary(model)
 # OUTPUT ::
-# Df    Sum Sq   Mean Sq F value Pr(>F)    
-# LOS           1 2.930e+09 2.930e+09   316.2 <2e-16 ***
-#   Residuals   498 4.615e+09 9.266e+06                   
-# ---
+#   Call:
+#   lm(formula = TOTCHG ~ ., data = hospital)
+# 
+# Residuals:
+#   Min     1Q Median     3Q    Max 
+# -6377   -700   -174    122  43378 
+# 
+# Coefficients:
+#   Estimate Std. Error t value Pr(>|t|)    
+# (Intercept) 5218.6769   507.6475  10.280  < 2e-16 ***
+#   AGE          134.6949    17.4711   7.710 7.02e-14 ***
+#   FEMALE      -390.6924   247.7390  -1.577    0.115    
+# LOS          743.1521    34.9225  21.280  < 2e-16 ***
+#   RACE        -212.4291   227.9326  -0.932    0.352    
+# APRDRG        -7.7909     0.6816 -11.430  < 2e-16 ***
+#   ---
 #   Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+# 
+# Residual standard error: 2613 on 493 degrees of freedom
+# (1 observation deleted due to missingness)
+# Multiple R-squared:  0.5536,	Adjusted R-squared:  0.5491 
+# F-statistic: 122.3 on 5 and 493 DF,  p-value: < 2.2e-16
 
-# Total charge is affected by LOS(length of stay)
-
-
-charge_gender <- aov(TOTCHG~FEMALE, data = hospital)
-summary(charge_gender)
-
+# Checking if AGE is affecting Total Charge or not.
+summary_model$coefficients[,4]["AGE"]
 # OUTPUT ::
-#   Df    Sum Sq  Mean Sq F value Pr(>F)
-# FEMALE        1 2.734e+07 27337922   1.811  0.179
-# Residuals   498 7.517e+09 15095177
-#Gender does not effect the total hospitalization cost.
+# AGE 
+# 7.021241e-14 
 
+# As p-value(7.021241e-14) is very less than alpha value(0.05),so we can reject null hypothesis.
+#Result ::
+# AGE is affecting the the total charge
 
-charge_age <- aov(TOTCHG~AGE, data = hospital)
-summary(charge_age)
-
+# Checking if Gender id affecting Total Charge or not.
+summary_model$coefficients[,4]["FEMALE"]
 # OUTPUT ::
-# Df    Sum Sq   Mean Sq F value  Pr(>F)   
-# AGE           1 1.308e+08 130822234   8.787 0.00318 **
-#   Residuals   498 7.414e+09  14887377                   
-# ---
-#   Signify. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-# Total charge is affected by age, but we can also analyze this by the help of plot.
-
-charge_severity <- aov(TOTCHG ~ APRDRG, data = hospital)
-summary(charge_severity)
+# FEMALE 
+# 0.1154295
+# As p-value(0.1154295) greater than alpha value(0.05), so we cannot reject null hypothesis.
+# Result ::
+# Gender is not affecting the Total Charge.
 
 
+# Checking if LOS(length of stay) is affecting Total Charge or not.
+summary_model$coefficients[,4]["LOS"]
 # OUTPUT ::
-# Df    Sum Sq   Mean Sq F value   Pr(>F)    
-# APRDRG        1 8.216e+08 821627648   60.86 3.63e-14 ***
-#   Residuals   498 6.723e+09  13500218                     
-# ---
-#   Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#   LOS 
+# 9.165156e-72 
+# As p-value(9.165156e-72) is less than alpha value(0.05), so here we are rejecting 
+# # null hypothesis.
+# Result ::
+# LOS is affecting the Total Charge
 
 
-# We can clearly see from above result that severity of diagnosis affects the the
-# hospitalization charge.
+  
+# Checking if RACE is affecting the Total Charge or not.
+summary_model$coefficients[,4]["RACE"]
+# OUTPUT ::
+#   RACE 
+# 0.3518021 
+# As p value(0.3518021) is greater than alpha value(0.05),  so we cannot reject the null
+hypothesis.
+# Result ::
+# RACE is not affecting the Total Charge
 
 
+#Checking if APRDRG is affecting the Total Charge or not.
+summary_model$coefficients[,4]["APRDRG"]
+# OUTPUT ::
+# APRDRG 
+# # 5.316182e-27 
+# As p-value is less than alpha value(0.05), so we will reject the null hypothesis.
+# # Result ::
+# APRDRG is affecting the Total Charge.
+  
 
-# From above, we come to conclusion that hospitalization cost is affected by Length of stay(LOS) and severity of 
-# diagnosis i.e(APRDRG). And little bit is affected by AGE.
-
-
-
-
-
+#Hence from above analysis we concluded that Total Charge is affected by AGE, LOS, and APRDRG.
+# GENDER and RACE is not affecting the Total Charge.
+ 
 
